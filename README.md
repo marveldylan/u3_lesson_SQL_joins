@@ -49,21 +49,19 @@ Note how id's are PRIMARY KEYs, and relationships are established when these ids
 `seed.sql`
 
 ```sql
--- Your Code Here
-CREATE TABLE authors(
-    id VARCHAR(255) PRIMARY KEY,
-    name VARCHAR(255),
-    nationality VARCHAR(255)
+CREATE TABLE authors (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255),
+  nationality VARCHAR(255),
+  birth_year INTEGER
 );
 
-CREATE TABLE books(
-    id VARCHAR(255) PRIMARY KEY,
-    title VARCHAR(255),
-    description VARCHAR(255),
-    completed BOOLEAN NOT NULL,
-    author_id VARCHAR(255) REFERENCES authors(id)
+CREATE TABLE books (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255),
+  publication_date INTEGER,
+  author_id VARCHAR(255) REFERENCES authors(id)
 );
--- Your Code Here
 ```
 
 
@@ -120,7 +118,7 @@ SELECT * FROM books JOIN authors ON books.author_id = authors.id WHERE authors.n
 We can use some premade Seed data to work with these commands
 
 ```bash
-$ createdb library
+createdb library
 ```
 
 Note that this is a command-line utility that ships with Postgres, as an alternate to using the SQL command `CREATE DATABASE library;` inside `psql`.
@@ -146,7 +144,7 @@ There are two ways to execute a sql file using psql.
 * Using your terminal shell (be sure you have changed into this directory):
 
 ```bash
-$ psql -d library < schema.sql
+psql -d library < schema.sql
 ```
 
 * Or from inside the psql cli:
@@ -154,7 +152,7 @@ $ psql -d library < schema.sql
 ```sql
 -- first cd to the directory where the file is
 -- then launch the psql cli and connect to the right db
-$ psql -d library
+psql -d library
 -- execute using \i and the filename
 \i schema.sql
 ```
@@ -166,13 +164,13 @@ We've provided a `seed.sql` file that adds sample data into our `library` databa
 Run the `seed.sql` using one of the techniques mentioned above, so we can practice interacting with our data. Make sure to also look at its contents and see how authors and books are related.
 
 ```bash
-$ psql -d library < seed.sql
+psql -d library < seed.sql
 ```
 
 Or:
 
 ```sql
-$ psql -d library
+psql -d library
 \i seed.sql
 ```
 
